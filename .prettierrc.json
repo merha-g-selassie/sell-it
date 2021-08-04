@@ -1,0 +1,7 @@
+{
+  "tralingComa": "all",
+  "singleQuote": true,
+  "tabWidth:": 2,
+  "semi": true,
+  "printWidth": 120
+}
