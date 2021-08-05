@@ -21,11 +21,11 @@ const configs: IKnexConfig = {
     },
     migrations: {
       extension: 'ts',
-      directory: './src/migrations/dev',
+      directory: './src/database/migrations/dev',
     },
     seeds: {
       extension: 'ts',
-      directory: './src/seeds/dev',
+      directory: './src/database/seeds/dev',
     },
   },
 

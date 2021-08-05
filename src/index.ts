@@ -1,25 +1,41 @@
-// import Knex from 'knex';
-// import { Model } from 'objection';
-// import User from './models/User';
-// import configs from '../knexfile';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import 'reflect-metadata';
+import { buildSchema } from 'type-graphql';
+import setupDb from './database/setup-database';
+import { HelloResolver } from './resolvers/hello';
+import { UserResolver } from './resolvers/user';
+import { usersRouter } from './routes/users';
 
-// const knex = Knex(configs.development);
+setupDb();
 
-// Model.knex(knex);
+// await knex.migrate.latest();
+// await knex.seed.run();
 
-// const setupKnex = async (): Promise<void> => {
-//   try {
-//     await knex.migrate.latest();
-//     await knex.seed.run();
-//     const res = await User.query();
-//     console.log(res);
-//   } catch (err) {
-//     console.error(err);
-//   } finally {
-//     await knex.destroy();
-//   }
-// };
+const main = async (): Promise<void> => {
+  const app = express();
+  app.use(express.json());
+  app.use(usersRouter);
 
-// setupKnex();
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [HelloResolver, UserResolver],
+      validate: false,
+    }),
+  });
 
-console.log('hello');
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(4000, () => {
+    console.log(`
+      🚀 Server is running! 
+      🔉 Listening on port 4000 
+      📭 Query at https://studio.apollographql.com/dev
+    `);
+  });
+};
+
+main().catch((err) => {
+  console.error(err);
+});
