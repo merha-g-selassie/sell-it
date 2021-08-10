@@ -2,7 +2,6 @@ import User from '../models/User';
 import { Resolver, Query, Arg, Mutation, Int } from 'type-graphql';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
-import { log } from 'console';
 @Resolver()
 export class UserResolver {
   @Query(() => String)
@@ -60,7 +59,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async update(
+  async updateUser(
     @Arg('id') id: string,
     @Arg('username') username: string,
     @Arg('email') email: string
@@ -69,12 +68,11 @@ export class UserResolver {
       username,
       email,
     });
-    log(res);
     return res;
   }
 
   @Mutation(() => Int)
-  async delete(@Arg('id') id: string): Promise<number> {
+  async deleteUser(@Arg('id') id: string): Promise<number> {
     const res = await User.query().deleteById(id);
     return res;
   }
