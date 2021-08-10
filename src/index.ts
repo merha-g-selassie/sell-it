@@ -1,11 +1,14 @@
-import { ApolloServer } from 'apollo-server-express';
-import express from 'express';
 import 'reflect-metadata';
+import 'dotenv-safe/config';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import setupDb from './database/setup-database';
 import { HelloResolver } from './resolvers/hello';
 import { UserResolver } from './resolvers/user';
 import { usersRouter } from './routes/users';
+import { CategoryResolver } from './resolvers/category';
+import { ArticleResolver } from './resolvers/article';
 
 setupDb();
 
@@ -19,7 +22,12 @@ const main = async (): Promise<void> => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, UserResolver],
+      resolvers: [
+        HelloResolver,
+        UserResolver,
+        CategoryResolver,
+        ArticleResolver,
+      ],
       validate: false,
     }),
   });

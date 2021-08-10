@@ -6,7 +6,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string('name').unique().notNullable();
     table.integer('price').notNullable();
     table.integer('category_id').unsigned();
-    table.foreign('category_id').references('Categories.id').onDelete('SET NULL');
+    table
+      .foreign('category_id')
+      .references('Categories.id')
+      .onDelete('SET NULL');
     table.timestamps(true, true);
   });
 }

@@ -8,8 +8,12 @@ export default class User extends Model {
   username!: string;
   @Field()
   email!: string;
-  @Field()
+  // @Field()
   password!: string;
+  @Field(() => Date, { nullable: true })
+  created_at: Date;
+  @Field(() => Date, { nullable: true })
+  updated_at: Date;
 
   static tableName = 'Users';
 }
